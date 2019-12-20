@@ -258,7 +258,8 @@ public class GhprbRepository implements Saveable {
         try {
             GHRepository repo = getGitHubRepo();
             GHPullRequest pr = repo.getPullRequest(id);
-            pr.comment(comment);
+//            pr.comment(comment);
+            System.out.println("Mock the pr comment, comment = " + comment); //not submit message to github
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "Could not add comment to pull request #" + id + ": '" + comment + "'", ex);
         }

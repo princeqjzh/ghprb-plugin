@@ -26,7 +26,6 @@ import org.kohsuke.github.GHCommitState;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -148,11 +147,13 @@ public class GhprbSimpleStatus extends GhprbExtension implements
         }
 
         String message = sb.toString();
-        try {
-            ghRepository.createCommitStatus(commitSha, state, url, message, context);
-        } catch (IOException e) {
-            throw new GhprbCommitStatusException(e, state, message, prId);
-        }
+
+        System.out.println("Mock commit status, message = " + message); //not submit message to github
+//        try {
+//            ghRepository.createCommitStatus(commitSha, state, url, message, context);
+//        } catch (IOException e) {
+//            throw new GhprbCommitStatusException(e, state, message, prId);
+//        }
     }
 
     @Override
@@ -279,11 +280,13 @@ public class GhprbSimpleStatus extends GhprbExtension implements
             listener.getLogger().println("Using context: " + context);
         }
 
-        try {
-            repo.createCommitStatus(sha1, state, url, message, context);
-        } catch (IOException e) {
-            throw new GhprbCommitStatusException(e, state, message, pullId);
-        }
+        System.out.println("Mock commit status, message = " + message); //not submit message to github
+
+//        try {
+//            repo.createCommitStatus(sha1, state, url, message, context);
+//        } catch (IOException e) {
+//            throw new GhprbCommitStatusException(e, state, message, pullId);
+//        }
     }
 
     @Override
