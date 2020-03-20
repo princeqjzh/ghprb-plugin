@@ -157,6 +157,8 @@ public class GhprbBuilds {
             template = Util.replaceMacro(template, vars);
             template = Ghprb.replaceMacros(build, listener, template);
             build.setDescription(template);
+            //Update by qianjz, output the PR_Title to the environment
+
         } catch (IOException ex) {
             logger.print("Can't update build description");
             ex.printStackTrace(logger);

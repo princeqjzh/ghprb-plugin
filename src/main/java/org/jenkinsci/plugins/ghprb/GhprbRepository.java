@@ -16,6 +16,7 @@ import org.jenkinsci.plugins.ghprb.extensions.GhprbCommentAppender;
 import org.jenkinsci.plugins.ghprb.extensions.GhprbCommitStatusException;
 import org.jenkinsci.plugins.ghprb.extensions.GhprbExtension;
 import org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildStatus;
+import org.jenkinsci.plugins.ghprb.extools.LoadUnitTestResult;
 import org.kohsuke.github.GHCommitState;
 import org.kohsuke.github.GHEvent;
 import org.kohsuke.github.GHEventPayload.IssueComment;
@@ -258,8 +259,15 @@ public class GhprbRepository implements Saveable {
         try {
             GHRepository repo = getGitHubRepo();
             GHPullRequest pr = repo.getPullRequest(id);
+            String msg = LoadUnitTestResult.loadMessageFromFile();
+            if (msg != null) {
+                pr.comment(msg);
+            } else {
+                pr.comment("hahahaha");
+            }
 //            pr.comment(comment);
-            System.out.println("Mock the pr comment, comment = " + comment); //not submit message to github
+//            pr.comment("hahahaahah");
+            LOGGER.log(Level.INFO, "++++ Mock the pr comment, comment = " + comment); //not submit message to github
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "Could not add comment to pull request #" + id + ": '" + comment + "'", ex);
         }
@@ -349,7 +357,7 @@ public class GhprbRepository implements Saveable {
         }
         int number = issueComment.getIssue().getNumber();
         LOGGER.log(Level.FINER, "Comment on issue #{0} from {1}: {2}",
-                new Object[] {number, issueComment.getComment().getUser(), issueComment.getComment().getBody()});
+                new Object[]{number, issueComment.getComment().getUser(), issueComment.getComment().getBody()});
 
         if (!"created".equals(issueComment.getAction())) {
             return;

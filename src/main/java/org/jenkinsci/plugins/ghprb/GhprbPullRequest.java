@@ -328,7 +328,8 @@ public class GhprbPullRequest {
      * the last update time.
      */
     private void updatePR(GHPullRequest ghpr, GHIssueComment comment, boolean isWebhook) {
-        System.out.println("This is mocked build .......");
+        LOGGER.log(Level.INFO, "++++ This is mocked build .......");
+//        System.out.println("This is mocked build .......");
         // Get the updated time
         try {
             Date lastUpdateTime = updated;

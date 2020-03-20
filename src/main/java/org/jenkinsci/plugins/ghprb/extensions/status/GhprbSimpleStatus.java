@@ -10,6 +10,7 @@ import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.ghprb.Ghprb;
 import org.jenkinsci.plugins.ghprb.GhprbCause;
+//import org.jenkinsci.plugins.ghprb.GhprbRepository;
 import org.jenkinsci.plugins.ghprb.GhprbTrigger;
 import org.jenkinsci.plugins.ghprb.extensions.GhprbCommitStatus;
 import org.jenkinsci.plugins.ghprb.extensions.GhprbCommitStatusException;
@@ -26,9 +27,12 @@ import org.kohsuke.github.GHCommitState;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GhprbSimpleStatus extends GhprbExtension implements
         GhprbCommitStatus, GhprbGlobalExtension, GhprbProjectExtension, GhprbGlobalDefault {
@@ -49,6 +53,8 @@ public class GhprbSimpleStatus extends GhprbExtension implements
     private final Boolean addTestResults;
 
     private final List<GhprbBuildResultMessage> completedStatus;
+
+    private static final transient Logger LOGGER = Logger.getLogger(GhprbSimpleStatus.class.getName());
 
     public GhprbSimpleStatus() {
         this(null);
@@ -148,12 +154,12 @@ public class GhprbSimpleStatus extends GhprbExtension implements
 
         String message = sb.toString();
 
-        System.out.println("Mock commit status, message = " + message); //not submit message to github
-//        try {
-//            ghRepository.createCommitStatus(commitSha, state, url, message, context);
-//        } catch (IOException e) {
-//            throw new GhprbCommitStatusException(e, state, message, prId);
-//        }
+        LOGGER.log(Level.INFO, "Mock commit status, message = " + message); //not submit message to github
+        try {
+            ghRepository.createCommitStatus(commitSha, state, url, message, context);
+        } catch (IOException e) {
+            throw new GhprbCommitStatusException(e, state, message, prId);
+        }
     }
 
     @Override
@@ -280,13 +286,13 @@ public class GhprbSimpleStatus extends GhprbExtension implements
             listener.getLogger().println("Using context: " + context);
         }
 
-        System.out.println("Mock commit status, message = " + message); //not submit message to github
+        LOGGER.log(Level.INFO, "++++ Mock commit status, message = " + message); //not submit message to github
 
-//        try {
-//            repo.createCommitStatus(sha1, state, url, message, context);
-//        } catch (IOException e) {
-//            throw new GhprbCommitStatusException(e, state, message, pullId);
-//        }
+        try {
+            repo.createCommitStatus(sha1, state, url, message, context);
+        } catch (IOException e) {
+            throw new GhprbCommitStatusException(e, state, message, pullId);
+        }
     }
 
     @Override
